@@ -5,6 +5,7 @@ import '../providers/cart.dart';
 import './cart_screen.dart';
 import '../widgets/badge.dart';
 import '../widgets/products_grid_item.dart';
+import '../widgets/app_drawer.dart';
 
 enum FilterOption {
   Favorites,
@@ -22,6 +23,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         title: const Text('My Shop'),
         actions: [
@@ -51,10 +53,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
           Consumer<Cart>(
             builder: (_, cart, child) {
-              return Badge(
+              return cart.itemCount!=0 ? Badge(
                 child: child,
                 value: cart.itemCount.toString(),
-              );
+              ): child;
             },
             child: IconButton(
               icon: const Icon(
