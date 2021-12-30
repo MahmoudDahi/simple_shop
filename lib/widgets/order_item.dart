@@ -15,30 +15,37 @@ class OrderItem extends StatefulWidget {
 }
 
 class _OrderItemState extends State<OrderItem> {
-  bool isExpanded = false;
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('\$${widget.order.amount}'),
-            subtitle: Text(
-                DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime)),
-            trailing: IconButton(
-              onPressed: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
-              icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        height: _isExpanded
+            ? min(widget.order.products.length * 20 + 90.0, 200)
+            : 75,
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('\$${widget.order.amount}'),
+              subtitle: Text(
+                  DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime)),
+              trailing: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+              ),
             ),
-          ),
-          if (isExpanded)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 4),
-              height: min(widget.order.products.length * 20 + 10.0, 100),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+              height: _isExpanded
+                  ? min(widget.order.products.length * 20 + 10.0, 100)
+                  : 0.0,
               child: ListView(
                 children: widget.order.products
                     .map(
@@ -60,7 +67,8 @@ class _OrderItemState extends State<OrderItem> {
                     .toList(),
               ),
             )
-        ],
+          ],
+        ),
       ),
     );
   }

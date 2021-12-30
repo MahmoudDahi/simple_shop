@@ -14,6 +14,8 @@ import './providers/products.dart';
 import './providers/order.dart';
 import './providers/auth.dart';
 
+import '../helper/custom_route.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -66,6 +68,10 @@ class MyApp extends StatelessWidget {
             fontFamily: 'lato',
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
+            pageTransitionsTheme: PageTransitionsTheme(builders: {
+              TargetPlatform.android:CustomPageTransactionBuilder(),
+              TargetPlatform.iOS:CustomPageTransactionBuilder(),
+            }),
           ),
           home: authData.isAuth
               ? ProductsOverviewScreen()
